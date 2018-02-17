@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VoiceRehabilitation</string>
+    <string name="app_record">Start</string>
+    <string name="app_assistance">Assistance</string>
 </resources>
