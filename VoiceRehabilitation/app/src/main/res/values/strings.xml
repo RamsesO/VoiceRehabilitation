@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VoiceRehabilitation</string>
+    <string name="attempt_sound">test</string>
 </resources>
