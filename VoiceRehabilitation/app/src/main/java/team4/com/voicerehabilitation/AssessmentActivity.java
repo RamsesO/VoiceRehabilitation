@@ -43,7 +43,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         vChart = (LineChart) findViewById(R.id.vChart);
         vChart.setOnChartValueSelectedListener(this);
 
-        vChart.getDescription().setEnabled(true);
+        vChart.getDescription().setEnabled(false);
 
         // enable scaling and dragging
         vChart.setDragEnabled(true);
@@ -108,6 +108,11 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
             }
             case R.id.actionFeedMultiple: {
                 feedMultiple();
+                break;
+            }
+
+            case R.id.actionSave: {
+                vChart.saveToPath("title" + System.currentTimeMillis(), "");
                 break;
             }
         }
