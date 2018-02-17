@@ -8,14 +8,15 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
+import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 
 
 /*
@@ -29,24 +30,15 @@ public class realTimeAudioTest extends AppCompatActivity {
     private static final int ENCODING = AudioFormat.ENCODING_PCM_FLOAT;
     private static final int CHANNEL_MASK = AudioFormat.CHANNEL_IN_MONO;
     private static final int BUFFER_SIZE = 2 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
+    private static final int RECORD_TIME = 2;
 
+    private boolean isRecordingComplete = false;
 
     private static final int PERMISSION_RECORD_AUDIO = 0;
 
-    private AudioRecord audioRecord = new AudioRecord(AUDIO_SOURCE, SAMPLE_RATE, CHANNEL_MASK, ENCODING, BUFFER_SIZE);
-    private AudioTrack audioTrack = new AudioTrack.Builder()
-            .setAudioAttributes(new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                .build())
-            .setAudioFormat(new AudioFormat.Builder()
-                .setEncoding(AudioFormat.ENCODING_PCM_FLOAT)
-                .setSampleRate(SAMPLE_RATE)
-                .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
-                .build())
-            .setBufferSizeInBytes(BUFFER_SIZE)
-            .setTransferMode(AudioTrack.MODE_STREAM)
-            .build();
+    private AudioRecord audioRecord = null;
+
+    private AudioTrack audioTrack = null;
 
     public float[] audioData;
 
@@ -61,7 +53,7 @@ public class realTimeAudioTest extends AppCompatActivity {
                         != PackageManager.PERMISSION_GRANTED) {
                     // Request permission
                     ActivityCompat.requestPermissions(realTimeAudioTest.this,
-                            new String[] { Manifest.permission.RECORD_AUDIO },
+                            new String[]{Manifest.permission.RECORD_AUDIO},
                             PERMISSION_RECORD_AUDIO);
                     return;
                 }
@@ -79,9 +71,12 @@ public class realTimeAudioTest extends AppCompatActivity {
         findViewById(R.id.stop_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(audioRecord.getState() != AudioRecord.RECORDSTATE_RECORDING){
-                    Toast.makeText(realTimeAudioTest.this, "Not recording anything", Toast.LENGTH_SHORT).show();
+                if (audioRecord == null) {
+                    Toast.makeText(realTimeAudioTest.this, "Not started", Toast.LENGTH_LONG).show();
+                } else {
+                    if (audioRecord.getState() != AudioRecord.RECORDSTATE_RECORDING) {
+                        Toast.makeText(realTimeAudioTest.this, "Not recording anything", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -102,8 +97,8 @@ public class realTimeAudioTest extends AppCompatActivity {
         }
     }
 
-    public void startRecording(){
-        switch(audioRecord.getState()){
+    public void startRecording() {
+        switch (audioRecord.getState()) {
             case AudioRecord.RECORDSTATE_RECORDING:
                 Toast.makeText(this, "Already running!", Toast.LENGTH_LONG).show();
                 break;
@@ -119,22 +114,74 @@ public class realTimeAudioTest extends AppCompatActivity {
         }
     }
 
-    public void playAudio(){
-        Toast.makeText(this, "Starting Up!", Toast.LENGTH_LONG).show();
-        this.audioData =  new float[BUFFER_SIZE];
-        int read;
-        this.audioRecord.startRecording();
-        int systemTime;
+    public void playAudio() {
+        this.audioData = new float[SAMPLE_RATE * RECORD_TIME];
 
-        read = this.audioRecord.read(audioData, 0, 0, AudioRecord.READ_BLOCKING);
-        if (read == AudioRecord.ERROR || read == AudioRecord.ERROR_DEAD_OBJECT || read == AudioRecord.ERROR_BAD_VALUE || read == AudioRecord.ERROR_INVALID_OPERATION){
-            Toast.makeText(this, "Error Code in Audio Recording " + read, Toast.LENGTH_LONG).show();
-        }
+        this.audioRecord = new AudioRecord.Builder()
+                .setAudioSource(MediaRecorder.AudioSource.MIC)
+                .setAudioFormat(new AudioFormat.Builder()
+                        .setEncoding(AudioFormat.ENCODING_PCM_FLOAT)
+                        .setSampleRate(SAMPLE_RATE)
+                        .setChannelMask(AudioFormat.CHANNEL_IN_MONO)
+                        .build())
+                .setBufferSizeInBytes(BUFFER_SIZE)
+                .build();
 
+        this.audioTrack = new AudioTrack.Builder()
+                .setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .build())
+                .setAudioFormat(new AudioFormat.Builder()
+                        .setEncoding(AudioFormat.ENCODING_PCM_FLOAT)
+                        .setSampleRate(SAMPLE_RATE)
+                        .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+                        .build())
+                .setBufferSizeInBytes(BUFFER_SIZE)
+                .setTransferMode(AudioTrack.MODE_STREAM)
+                .build();
 
-        this.audioRecord.stop();
-        this.audioRecord.release();
-        this.audioTrack.write(this.audioData, 0, 0, AudioTrack.WRITE_BLOCKING);
-        this.audioTrack.play();
+        Toast.makeText(this, "Starting Recording!", Toast.LENGTH_LONG).show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
+
+                audioRecord.startRecording();
+
+                long shortsRead = 0;
+                while (shortsRead < audioData.length) {
+                    int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
+                    shortsRead += numberOfIndexs;
+                }
+
+                audioRecord.stop();
+                audioTrack.release();
+                isRecordingComplete = true;
+
+            }
+        }).start();
+
+        Toast.makeText(this, "Playback!", Toast.LENGTH_LONG).show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (!isRecordingComplete) {
+
+                }
+
+                audioTrack.play();
+
+                audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_BLOCKING);
+
+            }
+
+        }).start();
+        Toast.makeText(this, "All done!", Toast.LENGTH_LONG).show();
+
     }
+
 }
