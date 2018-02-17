@@ -6,8 +6,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         play.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 MediaPlayer mediaPlayer = new MediaPlayer();
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     mediaPlayer.start();
 
                     Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_SHORT).show();
+
                 } catch (Exception e) {
                     // make something
                 }
