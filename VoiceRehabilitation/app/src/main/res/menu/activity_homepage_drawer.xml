@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Test Selection">
+    <menu>
+        <item
+            android:id="@+id/word_select"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Word Selection" />
+        <item
+            android:id="@+id/vowel_select"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Vowel Selection" />
+    </menu>
+    </item>
+
+    <item android:title="Application Data">
+        <menu>
+        <item
+            android:id="@+id/records"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Records" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings" />
+        </menu>
+    </item>
+
+
+
+</menu>
