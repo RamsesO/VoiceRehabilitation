@@ -122,60 +122,32 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
     private void addEntry(){
         LineData data = vChart.getData();
 
-        ILineDataSet set = data.getDataSetByIndex(0);
+        ILineDataSet correctSet = data.getDataSetByIndex(0);
 
-        if(set == null){
-            set = createSet();
-            data.addDataSet(set);
+
+        if(correctSet == null){
+            correctSet = createSet("correct sounds", ColorTemplate.getHoloBlue());
+            data.addDataSet(correctSet);
         }
 
-        data.addEntry(new Entry(set.getEntryCount(), (float)(Math.random() * 40) + 30f), 0);
-        data.notifyDataChanged();
 
+        float yVal = (float)(Math.random() * 40) + 30f;
+        data.addEntry(new Entry(correctSet.getEntryCount(), yVal), 0);
+        data.notifyDataChanged();
         vChart.notifyDataSetChanged();
+
 
         vChart.setVisibleXRangeMaximum(120);
 
         vChart.moveViewToX(data.getEntryCount());
 
     }
-    private LineDataSet createCorrectSet(String soundName) {
-        LineDataSet set = new LineDataSet(null, soundName);
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setColor(ColorTemplate.rgb(ff0000));
-        set.setCircleColor(Color.WHITE);
-        set.setLineWidth(2f);
-        set.setCircleRadius(1f);
-        set.setFillAlpha(65);
-        set.setFillColor(ColorTemplate.getHoloBlue());
-        set.setHighLightColor(Color.rgb(244, 117, 117));
-        set.setValueTextColor(Color.WHITE);
-        set.setValueTextSize(9f);
-        set.setDrawValues(false);
-        return set;
-    }
 
-    private LineDataSet createAcceptedSet() {
-        LineDataSet set = new LineDataSet(null, "Accepted Range");
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setColor(ColorTemplate.rgb(98fb98));
-        set.setCircleColor(Color.WHITE);
-        set.setLineWidth(2f);
-        set.setCircleRadius(1f);
-        set.setFillAlpha(65);
-        set.setFillColor(ColorTemplate.getHoloBlue());
-        set.setHighLightColor(Color.rgb(244, 117, 117));
-        set.setValueTextColor(Color.WHITE);
-        set.setValueTextSize(9f);
-        set.setDrawValues(false);
-        return set;
-    }
+    private LineDataSet createSet(String label, int rgb) {
 
-    private LineDataSet createSet() {
-
-        LineDataSet set = new LineDataSet(null, "Dynamic Data");
+        LineDataSet set = new LineDataSet(null, label);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setColor(ColorTemplate.getHoloBlue());
+        set.setColor(rgb);
         set.setCircleColor(Color.WHITE);
         set.setLineWidth(2f);
         set.setCircleRadius(1f);
