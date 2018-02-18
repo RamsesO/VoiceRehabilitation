@@ -56,6 +56,14 @@ public class homepage extends AppCompatActivity
             }
         });
 
+        findViewById(R.id.wordsButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(homepage.this, realTimeAudioTest.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 

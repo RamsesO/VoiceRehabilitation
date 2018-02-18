@@ -22,6 +22,8 @@ import com.sonarsource.bdd.dbjh.*;
 
 import org.jtransforms.fft.FloatFFT_1D;
 
+import java.util.ArrayList;
+
 /*
 See https://gist.github.com/kmark/d8b1b01fb0d2febf5770
 For reference code thank you whoever you are!
@@ -46,6 +48,9 @@ public class realTimeAudioTest extends AppCompatActivity {
     private AudioTrack audioTrack = null;
 
     public float[] audioData;
+
+    public float[] magnitudes;
+    public ArrayList<Integer> peakIndexes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,58 +112,41 @@ public class realTimeAudioTest extends AppCompatActivity {
         FormantExtractor extractor = new FormantExtractor();
         Log.d("", "Hi and stuff!!");
 
-//        AudioSignal wavFile = null;
-//        try {
-//            wavFile = AudioIo.loadWavFile("content://Galaxy S8//Phone//My Documents//AccessibilityTestFile.mp3");
-//            Log.d("",Integer.toString(extractor.formant(wavFile.data)));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Log.d("", "Error and stuff!!");
+        //FormantExtractor formantExtractor = new FormantExtractor();
+//        float[] data = new float[100000];
+//        double value = 0;
+//        for(int i = 0; i < data.length; i++){
+//            data[i] = (float) Math.sin(2* Math.PI * 120 *  value);
+//            value += 0.0001;
+//        }
+//        FloatFFT_1D fft = new FloatFFT_1D(data.length);
+//        fft.realForward(data);
+//        float max = Float.MIN_VALUE;
+//        int index = 0;
+//        float[] magnitudes = new float[data.length/2];
+//        for (int i = 0; i < data.length/2; i++){
+//            float real = data[i*2];
+//            float imag = data[2*i+1];
+//            float magnitude = (float)Math.sqrt(real * real + imag * imag);
+//            magnitudes[i] = magnitude;
+//        }
+//        for(int i =0; i< data.length/2; i++){
+//            if(magnitudes[i] > max){
+//                max = magnitudes[i];
+//                index = i;
+//            }
 //        }
 
-        //FormantExtractor formantExtractor = new FormantExtractor();
-        float[] data = new float[100000];
-        double value = 0;
-        for(int i = 0; i < data.length; i++){
-            data[i] = (float) Math.sin(2* Math.PI * 120 *  value);
-            value += 0.0001;
-        }
-        FloatFFT_1D fft = new FloatFFT_1D(data.length);
-        fft.realForward(data);
-        float max = Float.MIN_VALUE;
-        int index = 0;
-        float[] magnitudes = new float[data.length/2];
-        for (int i = 0; i < data.length/2; i++){
-            float real = data[i*2];
-            float imag = data[2*i+1];
-            float magnitude = (float)Math.sqrt(real * real + imag * imag);
-            magnitudes[i] = magnitude;
-        }
-        for(int i =0; i< data.length/2; i++){
-            if(magnitudes[i] > max){
-                max = magnitudes[i];
-                index = i;
+
+
+            if(this.audioRecord != null){
+                Toast.makeText(this, "Dont spam the button!", Toast.LENGTH_LONG).show();
+            } else {
+                playAudio();
             }
-        }
-
-
-        switch(audioRecord.getState()){
-            case AudioRecord.RECORDSTATE_RECORDING:
-                Toast.makeText(this, "Already running!", Toast.LENGTH_LONG).show();
-                break;
-            case AudioRecord.RECORDSTATE_STOPPED:
-                playAudio();
-                break;
-            case AudioRecord.READ_BLOCKING:
-                playAudio();
-                break;
-            case AudioRecord.ERROR:
-                Toast.makeText(this, "An error has occurred!", Toast.LENGTH_LONG).show();
-                break;
-
 
         }
-    }
+
 
     public void playAudio() {
         //this.isRecordingComplete = false;
@@ -208,6 +196,7 @@ public class realTimeAudioTest extends AppCompatActivity {
                         int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_NON_BLOCKING);
                         shortsRead += numberOfIndexs;
                     }
+                    generateGraphData(audioData);
                 }
                 float max = Float.MIN_VALUE;
                 for (int i = 0; i < audioData.length; i++){
@@ -227,39 +216,103 @@ public class realTimeAudioTest extends AppCompatActivity {
 
         //Toast.makeText(this, "Playback!", Toast.LENGTH_SHORT).show();
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
+//
+////                isPlaybackComplete = false;
+//
+////                while (!isRecordingComplete) {
+////
+////                }
+//
+//                audioTrack.play();
+//
+//                for(int i = 0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
+//                    int shortsRead = 0;
+//                    while (shortsRead < audioData.length) {
+//                        int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_NON_BLOCKING);
+//                        shortsRead += numberOfFloatsWritten;
+//                    }
+//                }
+//                audioTrack.stop();
+//                audioTrack.release();
+//                audioTrack = null;
+//                isStopButtonPressed = false;
+////                isPlaybackComplete = true;
+//
+//            }
+//
+//
+//
+//        }).start();
+
+        //Toast.makeText(this, "All done!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void generateGraphData(final float[] audioData){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 
-//                isPlaybackComplete = false;
+                Process.setThreadPriority(Process.THREAD_PRIORITY_DEFAULT);
 
-//                while (!isRecordingComplete) {
-//
-//                }
+                float[] magnitude = calculateFFT(audioData);
+                ArrayList<Integer> peakIndex = calculatePeaks(magnitude, 500);
+                magnitudes = magnitude;
+                peakIndexes = peakIndex;
+            }
+        }).start();
+    }
 
-                audioTrack.play();
+    public float[] calculateFFT(float[] audioData){
 
-                for(int i = 0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
-                    int shortsRead = 0;
-                    while (shortsRead < audioData.length) {
-                        int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_NON_BLOCKING);
-                        shortsRead += numberOfFloatsWritten;
-                    }
+        FloatFFT_1D fft = new FloatFFT_1D(audioData.length);
+        fft.realForward(audioData);
+
+        float[] magnitudes = new float[audioData.length/2];
+        for (int frequencyBin = 0; frequencyBin < audioData.length/2; frequencyBin++){
+            float real = audioData[frequencyBin*2];
+            float imaginary = audioData[2*frequencyBin+1];
+            float magnitude = (float)Math.sqrt(real * real + imaginary * imaginary);
+            magnitudes[frequencyBin] = magnitude;
+        }
+        return magnitudes;
+    }
+
+    public ArrayList<Integer> calculatePeaks(float[] magnitudes, int minimumDistance){
+        ArrayList<Integer> peakIndexes = new ArrayList<>();
+        int frequencyBin = 0;
+        float max = magnitudes[0];
+        int lastPeakIndex = 0;
+        while(frequencyBin < magnitudes.length - 1){
+            while(frequencyBin < magnitudes.length - 1 && magnitudes[frequencyBin + 1] >= max){
+                frequencyBin++;
+                max = magnitudes[frequencyBin];
+            }
+            if(!peakIndexes.isEmpty() && frequencyBin - lastPeakIndex < minimumDistance){
+                if(magnitudes[lastPeakIndex] > magnitudes[frequencyBin]){
+                    //Do not do anything, old peak is better
+                } else {
+                    //new peak is higher so replace the old close by one
+                    peakIndexes.remove(peakIndexes.size() - 1);
+                    peakIndexes.add(frequencyBin);
+                    lastPeakIndex = frequencyBin;
+                    //do not change peakIndex
                 }
-                audioTrack.stop();
-                audioTrack.release();
-                audioTrack = null;
-                isStopButtonPressed = false;
-//                isPlaybackComplete = true;
-
+            } else {
+                //Add a new peak not near any others
+                peakIndexes.add(frequencyBin);
+                lastPeakIndex = frequencyBin;
             }
 
-
-
-        }).start();
-
-        //Toast.makeText(this, "All done!", Toast.LENGTH_SHORT).show();
+            while(frequencyBin < magnitudes.length - 1 && magnitudes[frequencyBin + 1] <= max){
+                frequencyBin++;
+                max = magnitudes[frequencyBin];
+            }
+        }
+        return peakIndexes;
     }
 
 }
