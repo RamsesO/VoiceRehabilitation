@@ -8,6 +8,7 @@ import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ import java.net.SocketPermission;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssessmentActivity extends AppCompatActivity implements OnChartValueSelectedListener{
+public class AssessmentActivity extends AppCompatActivity implements OnChartValueSelectedListener {
 
     private LineChart vChart;
     private long items;
@@ -58,13 +59,14 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     private boolean isStopButtonPressed = false;
     private boolean continueParsing;
-    private boolean state;
+    private boolean isAudioStarted;
+    private boolean isFFTComplete = false;
 
 
     private AudioRecord audioRecord = null;
 
     public float[] audioData;
-
+    private int count = 0;
     public float[] magnitudes;
     public ArrayList<Integer> peakIndexes;
 
@@ -76,11 +78,10 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
         id = getIntent().getIntExtra("buttonId", -1);
         continueParsing = true;
-        state = true;
+        isAudioStarted = false;
         String uriParse = "";
 
-        switch(id)
-        {
+        switch (id) {
             case R.id.eeBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ee;
                 setTitle("Assessing: /i/ - (ee)");
@@ -140,9 +141,9 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         playVideo.setVideoURI(uri);
 
         Button playButton = findViewById(R.id.assistanceBTN);
-        playButton.setOnClickListener(new View.OnClickListener(){
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 playVideo.start();
             }
         });
@@ -188,14 +189,12 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         YAxis leftAxis = vChart.getAxisLeft();
         leftAxis.setTypeface(Typeface.SANS_SERIF);
         leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setAxisMaximum(26000f);
+        leftAxis.setAxisMaximum(100f);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawGridLines(true);
 
         YAxis rightAxis = vChart.getAxisRight();
         rightAxis.setEnabled(false);
-
-
 
 
     }
@@ -235,64 +234,95 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     public void buttonAddEntry(View view) {
         //addEntry();
-        recordAudio();
+        ArrayList<ILineDataSet> lines = new ArrayList<>();
+        ILineDataSet correctVG = initializeCorrectGraph();
+        lines.add(correctVG);
 
+        vChart.setData(new LineData(lines));
+        vChart.notifyDataSetChanged();
+        vChart.invalidate();
 
+        if (isAudioStarted) {
+            Toast.makeText(this, "Turning Audio off!", Toast.LENGTH_LONG).show();
+            isStopButtonPressed = true;
+            isAudioStarted = false;
+        } else {
+            recordAudio();
+            isAudioStarted = true;
+        }
     }
 
-    private void m(){
+    private void m(float[] magnitude) {
         ArrayList<ILineDataSet> lines = new ArrayList<>();
+        if (vChart.getLineData().getDataSetCount() == 2)
+            vChart.getLineData().removeDataSet(1);
+        vChart.getLineData().removeDataSet(0);
+
         ILineDataSet correctVoiceGraph = initializeCorrectGraph();
-        ILineDataSet currentVoiceGraph = voiceGraph();
+        ILineDataSet currentVoiceGraph = voiceGraph(magnitude);
 
         lines.add(correctVoiceGraph);
         lines.add(currentVoiceGraph);
 
         ((LineDataSet) lines.get(1)).enableDashedLine(10, 15, 0);
         vChart.setData(new LineData(lines));
+        vChart.notifyDataSetChanged();
         vChart.invalidate();
         lines.clear();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                continueParsing = false;
+            }
+        }, 1000);
+
     }
 
 
-    private LineDataSet initializeCorrectGraph(){
+    private LineDataSet initializeCorrectGraph() {
         ArrayList<Entry> correctList = new ArrayList<Entry>();
 
-        for(int i = 0; i < 22500; i++){
-            correctList.add(new Entry(i, (float)(Math.random() * 22500)));
+        for (int i = 0; i < 22500 / 50; i++) {
+            correctList.add(new Entry(i, (float) (Math.random() * 22500 / 50)));
         }
 
         LineDataSet correctSet = createSet("correct sound", Color.GREEN, correctList);
         return correctSet;
     }
 
-    private LineDataSet voiceGraph(){
+    private LineDataSet voiceGraph(float[] magnitude) {
 
         ArrayList<Entry> voiceList = new ArrayList<Entry>();
 
-//        for(int i = 0; i < this.magnitudes.length; i++){
-//            voiceList.add(new Entry(i, this.magnitudes[i]));
+//        double value = 0;
+//        for (int i = 0; i < magnitudes.length; i++) {
+//            magnitudes[i] = (float) (100 * Math.sin(2 * Math.PI * 120 * value));
+//            value += 0.0001;
 //        }
+        for (int i = 0; i < magnitude.length; i++) {
+            voiceList.add(new Entry(i, magnitude[i]));
+        }
 
         LineDataSet voiceSet = createSet("voice", Color.BLACK, voiceList);
         return voiceSet;
     }
 
 
-    private void addEntry(){
+    private void addEntry() {
 
         LineData data = vChart.getData();
 
         ILineDataSet correctSet = data.getDataSetByIndex(0);
 
 
-        if(correctSet == null){
+        if (correctSet == null) {
             correctSet = createSet("correct sounds", ColorTemplate.getHoloBlue(), null);
             data.addDataSet(correctSet);
         }
 
 
-        float yVal = (float)(Math.random() * 26000);
+        float yVal = (float) (Math.random() * 26000);
         float xVal = (float) items++;
         data.addEntry(new Entry(xVal, yVal), 0);
 
@@ -326,7 +356,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     private Thread thread;
 
-    private void feedMultiple(){
+    private void feedMultiple() {
         if (thread != null)
             thread.interrupt();
 
@@ -380,17 +410,22 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 
                 audioRecord.startRecording();
-                for( int i =0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
+                for (int i = 0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
                     int shortsRead = 0;
+                    audioData = new float[SAMPLE_RATE * RECORD_TIME];
                     while (shortsRead < audioData.length) {
                         int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_NON_BLOCKING);
                         shortsRead += numberOfIndexs;
                     }
-                    generateGraphData(audioData);
+                    generateGraphData(audioData.clone());
+                    while(!isFFTComplete);
+                    while (continueParsing);
+                    isFFTComplete = false;
+                    continueParsing = true;
                 }
                 float max = Float.MIN_VALUE;
-                for (int i = 0; i < audioData.length; i++){
-                    if (audioData[i] > max){
+                for (int i = 0; i < audioData.length; i++) {
+                    if (audioData[i] > max) {
                         max = audioData[i];
                     }
                 }
@@ -405,50 +440,62 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     }
 
-    public void generateGraphData(final float[] audioData){
+    public void generateGraphData(final float[] data) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 Process.setThreadPriority(Process.THREAD_PRIORITY_DEFAULT);
 
-                float[] magnitude = calculateFFT(audioData);
+                final float[] magnitude = calculateFFT(data);
                 ArrayList<Integer> peakIndex = calculatePeaks(magnitude, 500);
                 magnitudes = magnitude;
                 peakIndexes = peakIndex;
-                m();
-                continueParsing = false;
+
+                System.out.println("Iteration " + count);
+                for (int i = 0; i < magnitude.length; i++) {
+                    System.out.println("Index: " + i + "Value: " + magnitude[i]);
+
+                }
+                count++;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        m(magnitude.clone());
+                    }
+                });
+                isAudioStarted = true;
+                isFFTComplete = true;
             }
         }).start();
     }
 
-    public float[] calculateFFT(float[] audioData){
+    public float[] calculateFFT(float[] audioData) {
 
         FloatFFT_1D fft = new FloatFFT_1D(audioData.length);
         fft.realForward(audioData);
 
-        float[] magnitudes = new float[audioData.length/2];
-        for (int frequencyBin = 0; frequencyBin < audioData.length/2; frequencyBin++){
-            float real = audioData[frequencyBin*2];
-            float imaginary = audioData[2*frequencyBin+1];
-            float magnitude = (float)Math.sqrt(real * real + imaginary * imaginary);
+        float[] magnitudes = new float[audioData.length / 2];
+        for (int frequencyBin = 0; frequencyBin < audioData.length / 2; frequencyBin++) {
+            float real = audioData[frequencyBin * 2];
+            float imaginary = audioData[2 * frequencyBin + 1];
+            float magnitude = (float) Math.sqrt(real * real + imaginary * imaginary);
             magnitudes[frequencyBin] = magnitude;
         }
         return magnitudes;
     }
 
-    public ArrayList<Integer> calculatePeaks(float[] magnitudes, int minimumDistance){
+    public ArrayList<Integer> calculatePeaks(float[] magnitudes, int minimumDistance) {
         ArrayList<Integer> peakIndexes = new ArrayList<>();
         int frequencyBin = 0;
         float max = magnitudes[0];
         int lastPeakIndex = 0;
-        while(frequencyBin < magnitudes.length - 1){
-            while(frequencyBin < magnitudes.length - 1 && magnitudes[frequencyBin + 1] >= max){
+        while (frequencyBin < magnitudes.length - 1) {
+            while (frequencyBin < magnitudes.length - 1 && magnitudes[frequencyBin + 1] >= max) {
                 frequencyBin++;
                 max = magnitudes[frequencyBin];
             }
-            if(!peakIndexes.isEmpty() && frequencyBin - lastPeakIndex < minimumDistance){
-                if(magnitudes[lastPeakIndex] > magnitudes[frequencyBin]){
+            if (!peakIndexes.isEmpty() && frequencyBin - lastPeakIndex < minimumDistance) {
+                if (magnitudes[lastPeakIndex] > magnitudes[frequencyBin]) {
                     //Do not do anything, old peak is better
                 } else {
                     //new peak is higher so replace the old close by one
@@ -463,7 +510,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
                 lastPeakIndex = frequencyBin;
             }
 
-            while(frequencyBin < magnitudes.length - 1 && magnitudes[frequencyBin + 1] <= max){
+            while (frequencyBin < magnitudes.length - 1 && magnitudes[frequencyBin + 1] <= max) {
                 frequencyBin++;
                 max = magnitudes[frequencyBin];
             }
@@ -482,10 +529,10 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
 
-        if(thread != null){
+        if (thread != null) {
             thread.interrupt();
         }
     }

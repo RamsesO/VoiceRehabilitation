@@ -189,37 +189,37 @@ public class realTimeAudioTest extends AppCompatActivity {
 
         //Toast.makeText(this, "Playback!", Toast.LENGTH_SHORT).show();
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
+
+//                isPlaybackComplete = false;
+
+//                while (!isRecordingComplete) {
 //
-////                isPlaybackComplete = false;
-//
-////                while (!isRecordingComplete) {
-////
-////                }
-//
-//                audioTrack.play();
-//
-//                for(int i = 0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
-//                    int shortsRead = 0;
-//                    while (shortsRead < audioData.length) {
-//                        int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_NON_BLOCKING);
-//                        shortsRead += numberOfFloatsWritten;
-//                    }
 //                }
-//                audioTrack.stop();
-//                audioTrack.release();
-//                audioTrack = null;
-//                isStopButtonPressed = false;
-////                isPlaybackComplete = true;
-//
-//            }
-//
-//
-//
-//        }).start();
+
+                audioTrack.play();
+
+                for(int i = 0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
+                    int shortsRead = 0;
+                    while (shortsRead < audioData.length) {
+                        int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_NON_BLOCKING);
+                        shortsRead += numberOfFloatsWritten;
+                    }
+                }
+                audioTrack.stop();
+                audioTrack.release();
+                audioTrack = null;
+                isStopButtonPressed = false;
+//                isPlaybackComplete = true;
+
+            }
+
+
+
+        }).start();
 
         //Toast.makeText(this, "All done!", Toast.LENGTH_SHORT).show();
     }
