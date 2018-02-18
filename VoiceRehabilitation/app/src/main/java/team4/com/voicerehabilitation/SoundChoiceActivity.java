@@ -23,56 +23,6 @@ public class SoundChoiceActivity extends AppCompatActivity {
         Button btn_oo = (Button)findViewById(R.id.ooBtn);
         Button btn_u = (Button)findViewById(R.id.uBtn);
         Button btn_er = (Button)findViewById(R.id.erBtn);
-
-
-        btn_e.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
-        btn_ae.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
-        btn_ah.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
-        btn_aw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
-        btn_û.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
-        btn_oo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
-        btn_u.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
-        btn_er.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
-            }
-        });
     }
 
     public void startAssessment(View view)

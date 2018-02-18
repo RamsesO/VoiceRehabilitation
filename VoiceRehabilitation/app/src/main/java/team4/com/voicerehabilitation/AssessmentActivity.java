@@ -83,14 +83,55 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
         switch (id) {
             case R.id.eeBtn:
-                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ae;
-                setTitle("Assessing a");
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ee;
+                setTitle("Assessing: /i/ - (ee)");
+                break;
 
-                break;
             case R.id.iBtn:
-                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.a;
-                setTitle("Assessing i");
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.i;
+                setTitle("Assessing: /l/-(i)");
                 break;
+
+            case R.id.eBtn:
+                //uriParse = "android.resource://" + getPackageName() + "/" + R.raw.e;
+                setTitle("Assessing: / /-(e)");
+                break;
+
+            case R.id.aeBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ae;
+                setTitle("Assessing: /ae/-(ae)");
+                break;
+
+            case R.id.ahBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ah;
+                setTitle("Assessing: /a/-(ah)");
+                break;
+
+            case R.id.awBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.aw;
+                setTitle("Assessing: /ə/-(aw)");
+                break;
+
+            case R.id.ûBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.omega;
+                setTitle("Assessing: /ʊ/-(û)");
+                break;
+
+            case R.id.ooBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.oo;
+                setTitle("Assessing: /u/-(oo)");
+                break;
+
+            case R.id.uBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.u;
+                setTitle("Assessing: /ʌ/-(u)");
+                break;
+
+            case R.id.erBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.er;
+                setTitle("Assessing: /ɛ/-(er)");
+                break;
+
             default:
                 System.out.println("went to default");
                 break;
