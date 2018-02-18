@@ -188,6 +188,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/e"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -197,6 +198,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/ae"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -206,6 +208,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/ah"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -215,6 +218,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/aw"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -224,6 +228,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/û"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -233,6 +238,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/oo"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -242,6 +248,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/u"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -251,6 +258,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/er"
         app:layout_constraintEnd_toEndOf="parent" />
