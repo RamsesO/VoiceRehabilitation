@@ -21,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PracticeChoiceActivity"></activity>
         <activity android:name=".AssessmentActivity"></activity>
         <activity android:name=".SoundChoiceActivity"></activity>
         <activity
