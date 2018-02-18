@@ -13,10 +13,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.sonarsource.bdd.dbjh.*;
 
+import org.jtransforms.fft.FloatFFT_1D;
 
 /*
 See https://gist.github.com/kmark/d8b1b01fb0d2febf5770
@@ -103,6 +106,44 @@ public class realTimeAudioTest extends AppCompatActivity {
     }
 
     public void startRecording(){
+        FormantExtractor extractor = new FormantExtractor();
+        Log.d("", "Hi and stuff!!");
+
+//        AudioSignal wavFile = null;
+//        try {
+//            wavFile = AudioIo.loadWavFile("content://Galaxy S8//Phone//My Documents//AccessibilityTestFile.mp3");
+//            Log.d("",Integer.toString(extractor.formant(wavFile.data)));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.d("", "Error and stuff!!");
+//        }
+
+        //FormantExtractor formantExtractor = new FormantExtractor();
+        float[] data = new float[100000];
+        double value = 0;
+        for(int i = 0; i < data.length; i++){
+            data[i] = (float) Math.sin(2* Math.PI * 120 *  value);
+            value += 0.0001;
+        }
+        FloatFFT_1D fft = new FloatFFT_1D(data.length);
+        fft.realForward(data);
+        float max = Float.MIN_VALUE;
+        int index = 0;
+        float[] magnitudes = new float[data.length/2];
+        for (int i = 0; i < data.length/2; i++){
+            float real = data[i*2];
+            float imag = data[2*i+1];
+            float magnitude = (float)Math.sqrt(real * real + imag * imag);
+            magnitudes[i] = magnitude;
+        }
+        for(int i =0; i< data.length/2; i++){
+            if(magnitudes[i] > max){
+                max = magnitudes[i];
+                index = i;
+            }
+        }
+
+
         switch(audioRecord.getState()){
             case AudioRecord.RECORDSTATE_RECORDING:
                 Toast.makeText(this, "Already running!", Toast.LENGTH_LONG).show();
@@ -116,6 +157,8 @@ public class realTimeAudioTest extends AppCompatActivity {
             case AudioRecord.ERROR:
                 Toast.makeText(this, "An error has occurred!", Toast.LENGTH_LONG).show();
                 break;
+
+
         }
     }
 
