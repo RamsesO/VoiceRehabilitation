@@ -158,6 +158,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:textSize="14sp"
+
         app:layout_constraintBaseline_toBaselineOf="@+id/random"
         app:layout_constraintEnd_toEndOf="parent" />
     <Button
@@ -167,6 +168,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:textSize="14sp"
+        android:onClick="startAssessment"
         app:layout_constraintBaseline_toBaselineOf="@+id/ee"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -176,6 +178,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
+        android:onClick="startAssessment"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/i"
         app:layout_constraintEnd_toEndOf="parent" />

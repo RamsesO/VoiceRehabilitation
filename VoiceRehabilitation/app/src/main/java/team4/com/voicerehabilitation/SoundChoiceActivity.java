@@ -13,9 +13,61 @@ public class SoundChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_choice);
 
-        Button btn = (Button)findViewById(R.id.eeBtn);
+        Button btn_ee = (Button)findViewById(R.id.eeBtn);
+        Button btn_i = (Button)findViewById(R.id.iBtn);
+        Button btn_e = (Button)findViewById(R.id.eBtn);
+        Button btn_ae = (Button)findViewById(R.id.aeBtn);
+        Button btn_ah= (Button)findViewById(R.id.ahBtn);
+        Button btn_aw = (Button)findViewById(R.id.awBtn);
+        Button btn_û = (Button)findViewById(R.id.ûBtn);
+        Button btn_oo = (Button)findViewById(R.id.ooBtn);
+        Button btn_u = (Button)findViewById(R.id.uBtn);
+        Button btn_er = (Button)findViewById(R.id.erBtn);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+
+        btn_e.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
+            }
+        });
+        btn_ae.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
+            }
+        });
+        btn_ah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
+            }
+        });
+        btn_aw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
+            }
+        });
+        btn_û.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
+            }
+        });
+        btn_oo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
+            }
+        });
+        btn_u.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
+            }
+        });
+        btn_er.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SoundChoiceActivity.this, AssessmentActivity.class));
@@ -23,5 +75,10 @@ public class SoundChoiceActivity extends AppCompatActivity {
         });
     }
 
-
+    public void startAssessment(View view)
+    {
+        Intent intent = new Intent(this, AssessmentActivity.class);
+        intent.putExtra("buttonId", view.getId());
+        startActivity(intent);
+    }
 }

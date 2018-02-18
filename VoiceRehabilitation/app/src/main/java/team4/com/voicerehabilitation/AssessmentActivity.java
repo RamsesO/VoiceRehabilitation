@@ -2,6 +2,7 @@ package team4.com.voicerehabilitation;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -33,11 +35,52 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     private LineChart vChart;
     private long items;
+    VideoView playVideo;
+    Uri uri;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment);
+
+        id = getIntent().getIntExtra("buttonId", -1);
+
+        String uriParse = "";
+        switch(id)
+        {
+            case R.id.eeBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ae;
+                setTitle("Assessing a");
+
+                break;
+            case R.id.iBtn:
+                uriParse = "android.resource://" + getPackageName() + "/" + R.raw.a;
+                setTitle("Assessing i");
+                break;
+            default:
+                System.out.println("went to default");
+                break;
+        }
+        playVideo = findViewById(R.id.videoView1);
+        uri = Uri.parse(uriParse);
+        playVideo.setVideoURI(uri);
+
+        Button playButton = findViewById(R.id.assistanceBTN);
+        playButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                playVideo.start();
+            }
+        });
+
+
+
+
+
+
+
+
 
 
 
@@ -88,6 +131,9 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
         YAxis rightAxis = vChart.getAxisRight();
         rightAxis.setEnabled(false);
+
+
+
 
     }
 

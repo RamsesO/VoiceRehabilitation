@@ -6,83 +6,43 @@
     android:layout_height="match_parent"
     tools:context="team4.com.voicerehabilitation.AssessmentActivity">
 
-    <ImageView
-        android:id="@+id/box5"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assess_button"
-        app:srcCompat="@drawable/unchecked_checkbox" />
-
-    <ImageView
-        android:id="@+id/box1"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/box2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assess_button"
-        app:srcCompat="@drawable/unchecked_checkbox" />
-
-    <ImageView
-        android:id="@+id/box2"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/box3"
-
-        app:layout_constraintTop_toBottomOf="@+id/assess_button"
-        app:srcCompat="@drawable/unchecked_checkbox" />
-
-    <ImageView
-        android:id="@+id/box4"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/box5"
-        app:layout_constraintTop_toBottomOf="@+id/assess_button"
-        app:srcCompat="@drawable/unchecked_checkbox" />
-
-    <ImageView
-        android:id="@+id/box3"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="2"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/box4"
-        app:layout_constraintTop_toBottomOf="@+id/assess_button"
-        app:srcCompat="@drawable/unchecked_checkbox" />
 
     <Button
         android:id="@+id/assess_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_width="112dp"
+        android:layout_height="71dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="300dp"
         android:onClick="buttonAddEntry"
         android:text="@string/app_record"
+        app:layout_constraintEnd_toStartOf="@+id/assistanceBTN"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/assistanceBTN"
+        android:layout_width="184dp"
+        android:layout_height="81dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="300dp"
+        android:text="Touch for Assistance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.986"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
+    <VideoView
+        android:id="@+id/videoView1"
+        android:layout_width="500dp"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="404dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout" />
@@ -92,7 +52,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="2"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/vChart"
@@ -101,6 +63,8 @@
             android:layout_weight="2" />
 
     </LinearLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
 
