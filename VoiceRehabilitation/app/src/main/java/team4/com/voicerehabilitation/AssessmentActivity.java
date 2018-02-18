@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -85,51 +86,61 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
             case R.id.eeBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ee;
                 setTitle("Assessing: /i/ - (ee)");
+                setExpectedF("270", "2290");
                 break;
 
             case R.id.iBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.i;
                 setTitle("Assessing: /l/-(i)");
+                setExpectedF("390", "1990");
                 break;
 
             case R.id.eBtn:
                 //uriParse = "android.resource://" + getPackageName() + "/" + R.raw.e;
                 setTitle("Assessing: / /-(e)");
+                setExpectedF("530", "1840");
                 break;
 
             case R.id.aeBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ae;
                 setTitle("Assessing: /ae/-(ae)");
+                setExpectedF("660", "1720");
                 break;
 
             case R.id.ahBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.ah;
                 setTitle("Assessing: /a/-(ah)");
+                setExpectedF("730", "1090");
                 break;
 
             case R.id.awBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.aw;
                 setTitle("Assessing: /ə/-(aw)");
+                setExpectedF("570", "840");
                 break;
 
             case R.id.ûBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.omega;
                 setTitle("Assessing: /ʊ/-(û)");
+                setExpectedF("440", "1020");
                 break;
 
             case R.id.ooBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.oo;
                 setTitle("Assessing: /u/-(oo)");
+                setExpectedF("300", "870");
                 break;
 
             case R.id.uBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.u;
                 setTitle("Assessing: /ʌ/-(u)");
+                setExpectedF("640", "1190");
                 break;
 
             case R.id.erBtn:
                 uriParse = "android.resource://" + getPackageName() + "/" + R.raw.er;
                 setTitle("Assessing: /ɛ/-(er)");
+                setExpectedF("490", "1350");
                 break;
 
             default:
@@ -232,15 +243,25 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         return true;
     }
 
+    private void setExpectedF(String f1, String f2){
+        TextView f1ExpView = (TextView) findViewById(R.id.f1ValExp);
+        TextView f2ExpView = (TextView) findViewById(R.id.f2ValExp);
+
+        f1ExpView.setText("F1 Exp: " + f1);
+        f2ExpView.setText("F2 Exp: " + f2);
+    }
+
+    private void setCurrentF(ArrayList<Integer> list){
+        TextView f1View = (TextView) findViewById(R.id.f1Val);
+        TextView f2View = (TextView) findViewById(R.id.f2Val);
+
+        f1View.setText("F1 Curr: " + (list.get(0) * 2) + "");
+        f2View.setText("F2 Curr: " + (list.get(1) * 2) + "");
+    }
+
+
     public void buttonAddEntry(View view) {
         //addEntry();
-//        ArrayList<ILineDataSet> lines = new ArrayList<>();
-//        ILineDataSet correctVG = initializeCorrectGraph();
-//        lines.add(correctVG);
-//
-//        vChart.setData(new LineData(lines));
-//        vChart.notifyDataSetChanged();
-//        vChart.invalidate();
 
         if (isAudioStarted) {
             Toast.makeText(this, "Turning Audio off!", Toast.LENGTH_LONG).show();
@@ -252,7 +273,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         }
     }
 
-    private void m(float[] magnitude) {
+    private void m(float[] magnitude, ArrayList<Integer> peaks) {
         ArrayList<ILineDataSet> lines = new ArrayList<>();
 
         //ILineDataSet correctVoiceGraph = initializeCorrectGraph();
@@ -265,7 +286,8 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         vChart.setData(new LineData(lines));
         vChart.notifyDataSetChanged();
         vChart.invalidate();
-        //lines.clear();
+
+        setCurrentF(peaks);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -451,7 +473,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
                 Process.setThreadPriority(Process.THREAD_PRIORITY_DEFAULT);
 
                 final float[] magnitude = calculateFFT(data);
-                ArrayList<Integer> peakIndex = calculatePeaks(magnitude, 500);
+                final ArrayList<Integer> peakIndex = calculatePeaks(magnitude, 500);
                 magnitudes = magnitude;
                 peakIndexes = peakIndex;
 
@@ -464,7 +486,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        m(magnitude.clone());
+                        m(magnitude.clone(), (ArrayList<Integer>) peakIndex.clone());
                     }
                 });
                 isAudioStarted = true;
