@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".homepage"
+            android:label="@string/title_activity_homepage"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".realTimeAudioTest"></activity>
     </application>
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
 
 </manifest>
