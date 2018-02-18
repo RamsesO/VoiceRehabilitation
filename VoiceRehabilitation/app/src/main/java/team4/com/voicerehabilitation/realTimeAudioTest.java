@@ -112,33 +112,6 @@ public class realTimeAudioTest extends AppCompatActivity {
         FormantExtractor extractor = new FormantExtractor();
         Log.d("", "Hi and stuff!!");
 
-        //FormantExtractor formantExtractor = new FormantExtractor();
-//        float[] data = new float[100000];
-//        double value = 0;
-//        for(int i = 0; i < data.length; i++){
-//            data[i] = (float) Math.sin(2* Math.PI * 120 *  value);
-//            value += 0.0001;
-//        }
-//        FloatFFT_1D fft = new FloatFFT_1D(data.length);
-//        fft.realForward(data);
-//        float max = Float.MIN_VALUE;
-//        int index = 0;
-//        float[] magnitudes = new float[data.length/2];
-//        for (int i = 0; i < data.length/2; i++){
-//            float real = data[i*2];
-//            float imag = data[2*i+1];
-//            float magnitude = (float)Math.sqrt(real * real + imag * imag);
-//            magnitudes[i] = magnitude;
-//        }
-//        for(int i =0; i< data.length/2; i++){
-//            if(magnitudes[i] > max){
-//                max = magnitudes[i];
-//                index = i;
-//            }
-//        }
-
-
-
             if(this.audioRecord != null){
                 Toast.makeText(this, "Dont spam the button!", Toast.LENGTH_LONG).show();
             } else {
@@ -314,5 +287,30 @@ public class realTimeAudioTest extends AppCompatActivity {
         }
         return peakIndexes;
     }
+
+    //FormantExtractor formantExtractor = new FormantExtractor();
+//        float[] data = new float[100000];
+//        double value = 0;
+//        for(int i = 0; i < data.length; i++){
+//            data[i] = (float) Math.sin(2* Math.PI * 120 *  value);
+//            value += 0.0001;
+//        }
+//        FloatFFT_1D fft = new FloatFFT_1D(data.length);
+//        fft.realForward(data);
+//        float max = Float.MIN_VALUE;
+//        int index = 0;
+//        float[] magnitudes = new float[data.length/2];
+//        for (int i = 0; i < data.length/2; i++){
+//            float real = data[i*2];
+//            float imag = data[2*i+1];
+//            float magnitude = (float)Math.sqrt(real * real + imag * imag);
+//            magnitudes[i] = magnitude;
+//        }
+//        for(int i =0; i< data.length/2; i++){
+//            if(magnitudes[i] > max){
+//                max = magnitudes[i];
+//                index = i;
+//            }
+//        }
 
 }
