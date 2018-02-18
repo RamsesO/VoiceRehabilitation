@@ -25,12 +25,14 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.net.SocketPermission;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AssessmentActivity extends AppCompatActivity implements OnChartValueSelectedListener{
 
     private LineChart vChart;
+    private long items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,10 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         setContentView(R.layout.activity_assessment);
 
 
+
         //chart initialization
+
+        items = 0;
 
         vChart = (LineChart) findViewById(R.id.vChart);
         vChart.setOnChartValueSelectedListener(this);
@@ -120,41 +125,74 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
     }
 
     public void buttonAddEntry(View view) {
-        addEntry();
+        //addEntry();
+        ArrayList<ILineDataSet> lines = new ArrayList<>();
+        lines.add(initializeCorrectGraph());
+        lines.add(voiceGraph());
+
+        ((LineDataSet) lines.get(1)).enableDashedLine(10,15,0);
+        vChart.setData(new LineData(lines));
+        vChart.invalidate();
+    }
+
+
+    private LineDataSet initializeCorrectGraph(){
+        ArrayList<Entry> correctList = new ArrayList<Entry>();
+
+        for(int i = 0; i < 100; i++){
+            correctList.add(new Entry(i, (float)(Math.random() * 700) - 300f));
+        }
+
+        LineDataSet correctSet = createSet("correct sound", Color.GREEN, correctList);
+        return correctSet;
+    }
+
+    private LineDataSet voiceGraph(){
+        ArrayList<Entry> voiceList = new ArrayList<Entry>();
+
+        for(int i = 0; i < 100; i++){
+            voiceList.add(new Entry(i, (float)(Math.random() * 700) - 300f));
+        }
+
+        LineDataSet voiceSet = createSet("voice", Color.BLACK, voiceList);
+        return voiceSet;
     }
 
 
     private void addEntry(){
+
         LineData data = vChart.getData();
 
         ILineDataSet correctSet = data.getDataSetByIndex(0);
 
 
         if(correctSet == null){
-            correctSet = createSet("correct sounds", ColorTemplate.getHoloBlue());
+            correctSet = createSet("correct sounds", ColorTemplate.getHoloBlue(), null);
             data.addDataSet(correctSet);
         }
 
 
-        float yVal = (float)(Math.random() * 40) + 30f;
-        data.addEntry(new Entry(correctSet.getEntryCount(), yVal), 0);
+        float yVal = (float)(Math.random() * 700) - 300f;
+        float xVal = (float) items++;
+        data.addEntry(new Entry(xVal, yVal), 0);
+
         data.notifyDataChanged();
         vChart.notifyDataSetChanged();
 
 
-        vChart.setVisibleXRangeMaximum(120);
+        vChart.setVisibleXRangeMaximum(60);
 
         vChart.moveViewToX(data.getEntryCount());
 
     }
 
-    private LineDataSet createSet(String label, int rgb) {
+    private LineDataSet createSet(String label, int rgb, ArrayList<Entry> entries) {
 
-        LineDataSet set = new LineDataSet(null, label);
+        LineDataSet set = new LineDataSet(entries, label);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setColor(rgb);
         set.setCircleColor(Color.WHITE);
-        set.setLineWidth(2f);
+        set.setLineWidth(5f);
         set.setCircleRadius(1f);
         set.setFillAlpha(65);
         set.setFillColor(ColorTemplate.getHoloBlue());
