@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">VoiceRehabilitation</string>
+    <string name="attempt_sound">test</string>
     <string name="title_activity_homepage">The Mightiest Word</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
