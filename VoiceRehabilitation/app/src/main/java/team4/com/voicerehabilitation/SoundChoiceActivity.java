@@ -13,7 +13,7 @@ public class SoundChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_choice);
 
-        setTitle("The Mightiest Word      -     Practicing Vowels");
+        setTitle("Practicing Vowels");
     }
 
     public void startAssessment(View view)
