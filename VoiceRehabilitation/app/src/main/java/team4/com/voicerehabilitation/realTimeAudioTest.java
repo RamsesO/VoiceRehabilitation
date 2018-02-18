@@ -30,9 +30,10 @@ public class realTimeAudioTest extends AppCompatActivity {
     private static final int ENCODING = AudioFormat.ENCODING_PCM_FLOAT;
     private static final int CHANNEL_MASK = AudioFormat.CHANNEL_IN_MONO;
     private static final int BUFFER_SIZE = 2 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
-    private static final int RECORD_TIME = 2;
+    private static final int RECORD_TIME = 1;
 
     private boolean isRecordingComplete = false;
+    private boolean isPlaybackComplete = true;
 
     private static final int PERMISSION_RECORD_AUDIO = 0;
 
@@ -98,23 +99,15 @@ public class realTimeAudioTest extends AppCompatActivity {
     }
 
     public void startRecording() {
-        switch (audioRecord.getState()) {
-            case AudioRecord.RECORDSTATE_RECORDING:
-                Toast.makeText(this, "Already running!", Toast.LENGTH_LONG).show();
-                break;
-            case AudioRecord.RECORDSTATE_STOPPED:
+        if (audioRecord != null) {
+            Toast.makeText(this, "Do not spam the button", Toast.LENGTH_LONG).show();
+        } else {
                 playAudio();
-                break;
-            case AudioRecord.READ_BLOCKING:
-                playAudio();
-                break;
-            case AudioRecord.ERROR:
-                Toast.makeText(this, "An error has occurred!", Toast.LENGTH_LONG).show();
-                break;
         }
     }
 
     public void playAudio() {
+        //this.isRecordingComplete = false;
         this.audioData = new float[SAMPLE_RATE * RECORD_TIME];
 
         this.audioRecord = new AudioRecord.Builder()
@@ -141,33 +134,50 @@ public class realTimeAudioTest extends AppCompatActivity {
                 .setTransferMode(AudioTrack.MODE_STREAM)
                 .build();
 
-        Toast.makeText(this, "Starting Recording!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Starting Recording!", Toast.LENGTH_SHORT).show();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 
+                isRecordingComplete = false;
+
+                while(!isPlaybackComplete){
+
+                }
+
                 audioRecord.startRecording();
 
-                long shortsRead = 0;
+                int shortsRead = 0;
                 while (shortsRead < audioData.length) {
                     int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
                     shortsRead += numberOfIndexs;
                 }
 
+                float max = Float.MIN_VALUE;
+                for (int i = 0; i < audioData.length; i++){
+                    if (audioData[i] > max){
+                        max = audioData[i];
+                    }
+                }
+
                 audioRecord.stop();
-                audioTrack.release();
+                audioRecord.release();
+                audioRecord = null;
                 isRecordingComplete = true;
 
             }
         }).start();
 
-        Toast.makeText(this, "Playback!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Playback!", Toast.LENGTH_SHORT).show();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
+
+                isPlaybackComplete = false;
 
                 while (!isRecordingComplete) {
 
@@ -175,13 +185,25 @@ public class realTimeAudioTest extends AppCompatActivity {
 
                 audioTrack.play();
 
-                audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_BLOCKING);
+                int shortsRead = 0;
+                while (shortsRead < audioData.length) {
+                    int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_BLOCKING);
+                    shortsRead += numberOfFloatsWritten;
+                }
+
+                audioTrack.stop();
+                audioTrack.release();
+                audioTrack = null;
+
+                isPlaybackComplete = true;
 
             }
 
-        }).start();
-        Toast.makeText(this, "All done!", Toast.LENGTH_LONG).show();
 
+
+        }).start();
+
+        //Toast.makeText(this, "All done!", Toast.LENGTH_SHORT).show();
     }
 
 }
