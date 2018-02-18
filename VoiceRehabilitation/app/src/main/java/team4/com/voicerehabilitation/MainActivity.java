@@ -1,6 +1,5 @@
 package team4.com.voicerehabilitation;
 
-import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         playVideo = findViewById(R.id.videoView1);
-        uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.a);
+        uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.ae);
         playVideo.setVideoURI(uri);
 
         Button playButton = findViewById(R.id.button1);
