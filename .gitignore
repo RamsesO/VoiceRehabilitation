@@ -8,4 +8,8 @@
 /captures
 .externalNativeBuild
 
+<<<<<<< HEAD
 VoiceRehabilitation/\.idea/
+=======
+VoiceRehabilitation/\.idea/workspace\.xml
+>>>>>>> recordaudio
