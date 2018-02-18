@@ -221,19 +221,6 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.actionAdd: {
-                addEntry();
-                break;
-            }
-            case R.id.actionClear: {
-                vChart.clearValues();
-                Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.actionFeedMultiple: {
-                feedMultiple();
-                break;
-            }
 
             case R.id.actionSave: {
                 vChart.saveToPath("title" + System.currentTimeMillis(), "");
