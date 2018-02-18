@@ -10,30 +10,24 @@
 
     <Button
         android:id="@+id/assess_button"
-        android:layout_width="112dp"
-        android:layout_height="71dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="316dp"
         android:onClick="buttonAddEntry"
         android:text="@string/app_record"
-        app:layout_constraintEnd_toStartOf="@+id/assistanceBTN"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/assistanceBTN"
-        android:layout_width="184dp"
-        android:layout_height="81dp"
-        android:layout_marginEnd="116dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
-        android:text="Touch for Assistance"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="316dp"
+        android:text="@string/assistance"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.986"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <VideoView
         android:id="@+id/videoView1"
@@ -54,8 +48,8 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="2"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/vChart"
