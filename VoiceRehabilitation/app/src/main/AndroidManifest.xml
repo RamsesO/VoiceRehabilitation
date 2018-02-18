@@ -15,15 +15,22 @@
         <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".RecordAudio">
+        </activity>
+        <activity android:name=".PracticeChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PracticeChoiceActivity"></activity>
         <activity android:name=".AssessmentActivity"></activity>
-        <activity android:name=".SoundChoiceActivity"></activity>
+        <activity android:name=".SoundChoiceActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".homepage"
             android:label="@string/title_activity_homepage"
