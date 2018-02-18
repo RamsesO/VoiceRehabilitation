@@ -265,7 +265,7 @@
         android:singleLine="false"
         android:text="95"
         android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@+id/eeBtn"
         app:layout_constraintStart_toEndOf="@+id/ee"
         app:layout_constraintTop_toTopOf="parent" />
 
