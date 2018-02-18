@@ -8,4 +8,4 @@ local.properties
 .externalNativeBuild
 .idea
 build
-local.properties
+/local.properties
