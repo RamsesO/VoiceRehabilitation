@@ -34,6 +34,7 @@ public class realTimeAudioTest extends AppCompatActivity {
 
     private boolean isRecordingComplete = false;
     private boolean isPlaybackComplete = true;
+    private boolean isStopButtonPressed = false;
 
     private static final int PERMISSION_RECORD_AUDIO = 0;
 
@@ -79,6 +80,7 @@ public class realTimeAudioTest extends AppCompatActivity {
                         Toast.makeText(realTimeAudioTest.this, "Not recording anything", Toast.LENGTH_SHORT).show();
                     }
                 }
+                isStopButtonPressed = true;
             }
         });
     }
@@ -141,20 +143,20 @@ public class realTimeAudioTest extends AppCompatActivity {
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 
-                isRecordingComplete = false;
+//                isRecordingComplete = false;
 
-                while(!isPlaybackComplete){
-
-                }
+//                while(!isPlaybackComplete){
+//
+//                }
 
                 audioRecord.startRecording();
-
-                int shortsRead = 0;
-                while (shortsRead < audioData.length) {
-                    int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
-                    shortsRead += numberOfIndexs;
+                for( int i =0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
+                    int shortsRead = 0;
+                    while (shortsRead < audioData.length) {
+                        int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_NON_BLOCKING);
+                        shortsRead += numberOfIndexs;
+                    }
                 }
-
                 float max = Float.MIN_VALUE;
                 for (int i = 0; i < audioData.length; i++){
                     if (audioData[i] > max){
@@ -162,10 +164,11 @@ public class realTimeAudioTest extends AppCompatActivity {
                     }
                 }
 
+
                 audioRecord.stop();
                 audioRecord.release();
                 audioRecord = null;
-                isRecordingComplete = true;
+//                isRecordingComplete = true;
 
             }
         }).start();
@@ -177,25 +180,26 @@ public class realTimeAudioTest extends AppCompatActivity {
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 
-                isPlaybackComplete = false;
+//                isPlaybackComplete = false;
 
-                while (!isRecordingComplete) {
-
-                }
+//                while (!isRecordingComplete) {
+//
+//                }
 
                 audioTrack.play();
 
-                int shortsRead = 0;
-                while (shortsRead < audioData.length) {
-                    int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_BLOCKING);
-                    shortsRead += numberOfFloatsWritten;
+                for(int i = 0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
+                    int shortsRead = 0;
+                    while (shortsRead < audioData.length) {
+                        int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_NON_BLOCKING);
+                        shortsRead += numberOfFloatsWritten;
+                    }
                 }
-
                 audioTrack.stop();
                 audioTrack.release();
                 audioTrack = null;
-
-                isPlaybackComplete = true;
+                isStopButtonPressed = false;
+//                isPlaybackComplete = true;
 
             }
 
