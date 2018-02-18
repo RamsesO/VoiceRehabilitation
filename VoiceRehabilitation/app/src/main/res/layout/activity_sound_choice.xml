@@ -15,19 +15,20 @@
         android:layout_marginTop="15dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Random"
+        android:text=""
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ee"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/i/ (ee)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,12 +36,13 @@
 
     <TextView
         android:id="@+id/i"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/l/ (i)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,12 +50,13 @@
 
     <TextView
         android:id="@+id/e"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="115dp"
+        android:layout_marginTop="135dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/i/ (e)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,12 +64,13 @@
 
     <TextView
         android:id="@+id/ae"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="190dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/ae/ (ae)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,25 +78,27 @@
 
     <TextView
         android:id="@+id/ah"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="205dp"
+        android:layout_marginTop="245dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="/a/ (ah)"
         android:textAlignment="center"
+        android:textSize="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/random" />
 
     <TextView
         android:id="@+id/aw"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="300dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/ə/ (aw)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,12 +106,13 @@
 
     <TextView
         android:id="@+id/û"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="295dp"
+        android:layout_marginTop="355dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/ʊ/ (û)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,12 +120,13 @@
 
     <TextView
         android:id="@+id/oo"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="410dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/u/ (oo)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,12 +134,13 @@
 
     <TextView
         android:id="@+id/u"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="385dp"
+        android:layout_marginTop="465dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/ʌ/ (u)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,12 +148,13 @@
 
     <TextView
         android:id="@+id/er"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="430dp"
+        android:layout_marginTop="520dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="30dp"
         android:text="/ɛ/ (er)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -155,28 +165,29 @@
     <Button
         android:id="@+id/randomBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/attempt_sound"
+        android:text=""
+        android:background="@android:color/transparent"
         android:textSize="14sp"
-
         app:layout_constraintBaseline_toBaselineOf="@+id/random"
         app:layout_constraintEnd_toEndOf="parent" />
+
     <Button
         android:id="@+id/eeBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
+        android:onClick="startAssessment"
         android:text="@string/attempt_sound"
         android:textSize="14sp"
-        android:onClick="startAssessment"
         app:layout_constraintBaseline_toBaselineOf="@+id/ee"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/iBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -186,7 +197,7 @@
     <Button
         android:id="@+id/eBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -196,7 +207,7 @@
     <Button
         android:id="@+id/aeBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -206,7 +217,7 @@
     <Button
         android:id="@+id/ahBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -216,7 +227,7 @@
     <Button
         android:id="@+id/awBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -226,7 +237,7 @@
     <Button
         android:id="@+id/ûBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -236,7 +247,7 @@
     <Button
         android:id="@+id/ooBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -246,7 +257,7 @@
     <Button
         android:id="@+id/uBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:onClick="startAssessment"
@@ -257,7 +268,7 @@
     <Button
         android:id="@+id/erBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:onClick="startAssessment"
         android:text="@string/attempt_sound"
