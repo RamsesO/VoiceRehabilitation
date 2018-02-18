@@ -246,9 +246,13 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
     private void setExpectedF(String f1, String f2){
         TextView f1ExpView = (TextView) findViewById(R.id.f1ValExp);
         TextView f2ExpView = (TextView) findViewById(R.id.f2ValExp);
+        TextView f1View = (TextView) findViewById(R.id.f1Val);
+        TextView f2View = (TextView) findViewById(R.id.f2Val);
 
         f1ExpView.setText("F1 Exp: " + f1);
         f2ExpView.setText("F2 Exp: " + f2);
+        f1View.setText("");
+        f2View.setText("");
     }
 
     private void setCurrentF(ArrayList<Integer> list){
