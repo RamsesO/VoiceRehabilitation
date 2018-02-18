@@ -44,9 +44,6 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
     private LineChart vChart;
     private long items;
 
-    // graph fields
-    ArrayList<ILineDataSet> lines;
-    ILineDataSet correctVoiceGraph;
     // video fields
     private VideoView playVideo;
     private Uri uri;
@@ -150,8 +147,8 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         YAxis leftAxis = vChart.getAxisLeft();
         leftAxis.setTypeface(Typeface.SANS_SERIF);
         leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setAxisMaximum(1000f);
-        leftAxis.setAxisMinimum(-1000f);
+        leftAxis.setAxisMaximum(26000f);
+        leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawGridLines(true);
 
         YAxis rightAxis = vChart.getAxisRight();
@@ -197,39 +194,23 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     public void buttonAddEntry(View view) {
         //addEntry();
-
-        if(state) {
-            lines = new ArrayList<>();
-            correctVoiceGraph = initializeCorrectGraph();
-
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-                    while (state) {
-
-                        recordAudio();
-                        //while loop for parsing data and getting chunks
-                        while (continueParsing && state) ;
-
-                        ILineDataSet currentVoiceGraph = voiceGraph();
-
-                        lines.add(correctVoiceGraph);
-                        lines.add(currentVoiceGraph);
-
-                        ((LineDataSet) lines.get(1)).enableDashedLine(10, 15, 0);
-                        vChart.setData(new LineData(lines));
-                        vChart.invalidate();
-                        lines.clear();
-                        continueParsing = true;
-                    }
-//                }
-//            }).start();
-        }
-        else
-            state = false;
+        recordAudio();
 
 
+    }
 
+    private void m(){
+        ArrayList<ILineDataSet> lines = new ArrayList<>();
+        ILineDataSet correctVoiceGraph = initializeCorrectGraph();
+        ILineDataSet currentVoiceGraph = voiceGraph();
+
+        lines.add(correctVoiceGraph);
+        lines.add(currentVoiceGraph);
+
+        ((LineDataSet) lines.get(1)).enableDashedLine(10, 15, 0);
+        vChart.setData(new LineData(lines));
+        vChart.invalidate();
+        lines.clear();
     }
 
 
@@ -248,9 +229,9 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
         ArrayList<Entry> voiceList = new ArrayList<Entry>();
 
-        for(int i = 0; i < this.magnitudes.length; i++){
-            voiceList.add(new Entry(i, this.magnitudes[i]));
-        }
+//        for(int i = 0; i < this.magnitudes.length; i++){
+//            voiceList.add(new Entry(i, this.magnitudes[i]));
+//        }
 
         LineDataSet voiceSet = createSet("voice", Color.BLACK, voiceList);
         return voiceSet;
@@ -270,7 +251,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
         }
 
 
-        float yVal = (float)(Math.random() * 700) - 300f;
+        float yVal = (float)(Math.random() * 26000);
         float xVal = (float) items++;
         data.addEntry(new Entry(xVal, yVal), 0);
 
@@ -394,6 +375,7 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
                 ArrayList<Integer> peakIndex = calculatePeaks(magnitude, 500);
                 magnitudes = magnitude;
                 peakIndexes = peakIndex;
+                m();
                 continueParsing = false;
             }
         }).start();
