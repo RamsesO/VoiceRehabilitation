@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">VoiceRehabilitation</string>
+    <string name="app_record">Start</string>
+    <string name="app_assistance">Assistance</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="attempt_sound">test</string>
     <string name="title_activity_homepage">The Mightiest Word</string>
 
