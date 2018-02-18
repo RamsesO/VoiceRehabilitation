@@ -234,13 +234,13 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     public void buttonAddEntry(View view) {
         //addEntry();
-        ArrayList<ILineDataSet> lines = new ArrayList<>();
-        ILineDataSet correctVG = initializeCorrectGraph();
-        lines.add(correctVG);
-
-        vChart.setData(new LineData(lines));
-        vChart.notifyDataSetChanged();
-        vChart.invalidate();
+//        ArrayList<ILineDataSet> lines = new ArrayList<>();
+//        ILineDataSet correctVG = initializeCorrectGraph();
+//        lines.add(correctVG);
+//
+//        vChart.setData(new LineData(lines));
+//        vChart.notifyDataSetChanged();
+//        vChart.invalidate();
 
         if (isAudioStarted) {
             Toast.makeText(this, "Turning Audio off!", Toast.LENGTH_LONG).show();
@@ -254,21 +254,18 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 
     private void m(float[] magnitude) {
         ArrayList<ILineDataSet> lines = new ArrayList<>();
-        if (vChart.getLineData().getDataSetCount() == 2)
-            vChart.getLineData().removeDataSet(1);
-        vChart.getLineData().removeDataSet(0);
 
-        ILineDataSet correctVoiceGraph = initializeCorrectGraph();
+        //ILineDataSet correctVoiceGraph = initializeCorrectGraph();
         ILineDataSet currentVoiceGraph = voiceGraph(magnitude);
 
-        lines.add(correctVoiceGraph);
+        //lines.add(correctVoiceGraph);
         lines.add(currentVoiceGraph);
 
-        ((LineDataSet) lines.get(1)).enableDashedLine(10, 15, 0);
+        //((LineDataSet) lines.get(1)).enableDashedLine(10, 15, 0);
         vChart.setData(new LineData(lines));
         vChart.notifyDataSetChanged();
         vChart.invalidate();
-        lines.clear();
+        //lines.clear();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -300,8 +297,15 @@ public class AssessmentActivity extends AppCompatActivity implements OnChartValu
 //            magnitudes[i] = (float) (100 * Math.sin(2 * Math.PI * 120 * value));
 //            value += 0.0001;
 //        }
-        for (int i = 0; i < magnitude.length; i++) {
-            voiceList.add(new Entry(i, magnitude[i]));
+        int arrayIndex = 0;
+        for (int i = 0; i < 100; i++) {
+            float value = 0;
+            for(int o = 0; o < 73; o++){
+                value += magnitude[o + arrayIndex];
+        }
+            arrayIndex += 73;
+            value = value / 73;
+            voiceList.add(new Entry(i, value));
         }
 
         LineDataSet voiceSet = createSet("voice", Color.BLACK, voiceList);
