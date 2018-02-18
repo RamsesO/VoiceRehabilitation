@@ -18,6 +18,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.sonarsource.bdd.dbjh.*;
+
+import org.jtransforms.fft.FloatFFT_1D;
 
 /*
 See https://gist.github.com/kmark/d8b1b01fb0d2febf5770
@@ -30,9 +33,11 @@ public class realTimeAudioTest extends AppCompatActivity {
     private static final int ENCODING = AudioFormat.ENCODING_PCM_FLOAT;
     private static final int CHANNEL_MASK = AudioFormat.CHANNEL_IN_MONO;
     private static final int BUFFER_SIZE = 2 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
-    private static final int RECORD_TIME = 2;
+    private static final int RECORD_TIME = 1;
 
     private boolean isRecordingComplete = false;
+    private boolean isPlaybackComplete = true;
+    private boolean isStopButtonPressed = false;
 
     private static final int PERMISSION_RECORD_AUDIO = 0;
 
@@ -78,6 +83,7 @@ public class realTimeAudioTest extends AppCompatActivity {
                         Toast.makeText(realTimeAudioTest.this, "Not recording anything", Toast.LENGTH_SHORT).show();
                     }
                 }
+                isStopButtonPressed = true;
             }
         });
     }
@@ -97,8 +103,46 @@ public class realTimeAudioTest extends AppCompatActivity {
         }
     }
 
-    public void startRecording() {
-        switch (audioRecord.getState()) {
+    public void startRecording(){
+        FormantExtractor extractor = new FormantExtractor();
+        Log.d("", "Hi and stuff!!");
+
+//        AudioSignal wavFile = null;
+//        try {
+//            wavFile = AudioIo.loadWavFile("content://Galaxy S8//Phone//My Documents//AccessibilityTestFile.mp3");
+//            Log.d("",Integer.toString(extractor.formant(wavFile.data)));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.d("", "Error and stuff!!");
+//        }
+
+        //FormantExtractor formantExtractor = new FormantExtractor();
+        float[] data = new float[100000];
+        double value = 0;
+        for(int i = 0; i < data.length; i++){
+            data[i] = (float) Math.sin(2* Math.PI * 120 *  value);
+            value += 0.0001;
+        }
+        FloatFFT_1D fft = new FloatFFT_1D(data.length);
+        fft.realForward(data);
+        float max = Float.MIN_VALUE;
+        int index = 0;
+        float[] magnitudes = new float[data.length/2];
+        for (int i = 0; i < data.length/2; i++){
+            float real = data[i*2];
+            float imag = data[2*i+1];
+            float magnitude = (float)Math.sqrt(real * real + imag * imag);
+            magnitudes[i] = magnitude;
+        }
+        for(int i =0; i< data.length/2; i++){
+            if(magnitudes[i] > max){
+                max = magnitudes[i];
+                index = i;
+            }
+        }
+
+
+        switch(audioRecord.getState()){
             case AudioRecord.RECORDSTATE_RECORDING:
                 Toast.makeText(this, "Already running!", Toast.LENGTH_LONG).show();
                 break;
@@ -111,10 +155,13 @@ public class realTimeAudioTest extends AppCompatActivity {
             case AudioRecord.ERROR:
                 Toast.makeText(this, "An error has occurred!", Toast.LENGTH_LONG).show();
                 break;
+
+
         }
     }
 
     public void playAudio() {
+        //this.isRecordingComplete = false;
         this.audioData = new float[SAMPLE_RATE * RECORD_TIME];
 
         this.audioRecord = new AudioRecord.Builder()
@@ -141,47 +188,78 @@ public class realTimeAudioTest extends AppCompatActivity {
                 .setTransferMode(AudioTrack.MODE_STREAM)
                 .build();
 
-        Toast.makeText(this, "Starting Recording!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Starting Recording!", Toast.LENGTH_SHORT).show();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 
-                audioRecord.startRecording();
+//                isRecordingComplete = false;
 
-                long shortsRead = 0;
-                while (shortsRead < audioData.length) {
-                    int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_BLOCKING);
-                    shortsRead += numberOfIndexs;
+//                while(!isPlaybackComplete){
+//
+//                }
+
+                audioRecord.startRecording();
+                for( int i =0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
+                    int shortsRead = 0;
+                    while (shortsRead < audioData.length) {
+                        int numberOfIndexs = audioRecord.read(audioData, 0, audioData.length, AudioRecord.READ_NON_BLOCKING);
+                        shortsRead += numberOfIndexs;
+                    }
+                }
+                float max = Float.MIN_VALUE;
+                for (int i = 0; i < audioData.length; i++){
+                    if (audioData[i] > max){
+                        max = audioData[i];
+                    }
                 }
 
+
                 audioRecord.stop();
-                audioTrack.release();
-                isRecordingComplete = true;
+                audioRecord.release();
+                audioRecord = null;
+//                isRecordingComplete = true;
 
             }
         }).start();
 
-        Toast.makeText(this, "Playback!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Playback!", Toast.LENGTH_SHORT).show();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 
-                while (!isRecordingComplete) {
+//                isPlaybackComplete = false;
 
-                }
+//                while (!isRecordingComplete) {
+//
+//                }
 
                 audioTrack.play();
 
-                audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_BLOCKING);
+                for(int i = 0; i < Integer.MAX_VALUE && !isStopButtonPressed; i++) {
+                    int shortsRead = 0;
+                    while (shortsRead < audioData.length) {
+                        int numberOfFloatsWritten = audioTrack.write(audioData, 0, audioData.length, AudioTrack.WRITE_NON_BLOCKING);
+                        shortsRead += numberOfFloatsWritten;
+                    }
+                }
+                audioTrack.stop();
+                audioTrack.release();
+                audioTrack = null;
+                isStopButtonPressed = false;
+//                isPlaybackComplete = true;
 
             }
 
-        }).start();
-        Toast.makeText(this, "All done!", Toast.LENGTH_LONG).show();
 
+
+        }).start();
+
+        //Toast.makeText(this, "All done!", Toast.LENGTH_SHORT).show();
     }
 
 }
