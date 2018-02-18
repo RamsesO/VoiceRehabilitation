@@ -13,16 +13,7 @@ public class SoundChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_choice);
 
-        Button btn_ee = (Button)findViewById(R.id.eeBtn);
-        Button btn_i = (Button)findViewById(R.id.iBtn);
-        Button btn_e = (Button)findViewById(R.id.eBtn);
-        Button btn_ae = (Button)findViewById(R.id.aeBtn);
-        Button btn_ah= (Button)findViewById(R.id.ahBtn);
-        Button btn_aw = (Button)findViewById(R.id.awBtn);
-        Button btn_û = (Button)findViewById(R.id.ûBtn);
-        Button btn_oo = (Button)findViewById(R.id.ooBtn);
-        Button btn_u = (Button)findViewById(R.id.uBtn);
-        Button btn_er = (Button)findViewById(R.id.erBtn);
+        setTitle("The Mightiest Word      -     Practicing Vowels");
     }
 
     public void startAssessment(View view)
