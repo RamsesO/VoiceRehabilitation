@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context="team4.com.voicerehabilitation.SoundChoiceActivity">
 
-    <EditText
-        android:id="@+id/item1"
+    <TextView
+        android:id="@+id/random"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -19,38 +19,239 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/item2"
+    <TextView
+        android:id="@+id/ee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="'Ah'"
+        android:text="/i/ (ee)"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item1" />
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/l/ (i)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/i/ (e)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/ae"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="108dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/ae/ (ae)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/ah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="140dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/a/ (ah)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/aw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="168dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/ə/ (aw)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/û"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="196dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/ʊ/ (û)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/oo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="224dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/u/ (oo)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/u"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="252dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/ʌ/ (u)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+    <TextView
+        android:id="@+id/er"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="284dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="/ɛ/ (er)"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/random" />
+
+
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/randomBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/item1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/random"
         app:layout_constraintEnd_toEndOf="parent" />
-
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/eeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/attempt_sound"
         android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/item2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ee"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/iBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/i"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/eBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/e"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/aeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ae"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/ahBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ah"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/awBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/aw"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/ûBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/û"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/ooBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/oo"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/uBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/u"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/erBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/attempt_sound"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/er"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <EditText
         android:id="@+id/editText3"
@@ -58,13 +259,14 @@
         android:layout_height="43dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="numberDecimal"
         android:singleLine="false"
         android:text="95"
         android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/button5"
-        app:layout_constraintStart_toEndOf="@+id/item2"
-        tools:layout_editor_absoluteY="77dp" />
+        app:layout_constraintStart_toEndOf="@+id/ee"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
