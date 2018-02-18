@@ -18,4 +18,5 @@
     <string name="hello">HELLO</string>
     <string name="start_recording">Start Recording</string>
     <string name="stop_recording">Stop Recording</string>
+    <string name="assistance">Assistance</string>
 </resources>
