@@ -33,6 +33,7 @@
         </activity>
 
         <activity android:name=".realTimeAudioTest"></activity>
+        <activity android:name=".AssistanceActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
